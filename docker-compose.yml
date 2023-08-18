@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  modsecurity:
+    image: 'owasp/modsecurity-crs:apache'
+    hostname: modsecurity.lab
+    restart: always
+    ports:
+      - 0.0.0.0:8080:80
+    environment:
+      - BACKEND=http://10.3.0.100:80
+      - BACKEND_WS=ws://10.3.0.100:80
+    networks:
+      vulnapp:
+        ipv4_address: 10.3.0.10
+
+  wackopicko:
+    image: 'adamdoupe/wackopicko:latest'
+    hostname: wackopicko.lab
+    restart: always
+    networks:
+      vulnapp:
+        ipv4_address: 10.3.0.100
+
+networks:
+  vulnapp:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.3.0.0/24
+          gateway: 10.3.0.1
