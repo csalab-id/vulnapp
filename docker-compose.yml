@@ -12,6 +12,8 @@ services:
     networks:
       vulnapp:
         ipv4_address: 10.3.0.10
+      public:
+        ipv4_address: 10.3.1.10
 
   wackopicko:
     image: 'adamdoupe/wackopicko:latest'
@@ -24,7 +26,15 @@ services:
 networks:
   vulnapp:
     driver: bridge
+    internal: true
     ipam:
       config:
         - subnet: 10.3.0.0/24
           gateway: 10.3.0.1
+
+  public:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.3.1.0/24
+          gateway: 10.3.1.1
